@@ -1,5 +1,10 @@
 # sensor_projekt
 
+# node_modules
+```
+The node_modules-folder is not included since its too big and there are unused files.
+```
+
 ## Project setup
 ```
 npm install
