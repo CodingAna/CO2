@@ -40,7 +40,7 @@ export default {
             this.page = 'login';
         });
     },
-
+    
     methods: {
         login(payload){
             console.log(payload);
@@ -49,11 +49,6 @@ export default {
                 this.page = 'listview';
             }
         },
-        
-        logout() {
-            this.loggedIn = false;
-            this.page = 'login';
-        }
     },
 };
 </script>
