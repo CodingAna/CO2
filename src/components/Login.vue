@@ -17,7 +17,8 @@
                                         <v-text-field v-model="email" :rules="emailRules" label="E-Mail" required/>
                                     </v-col>
                                     <v-col cols="12" md="12">
-                                        <v-text-field :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[passwordRules.required, passwordRules.min]" :type="show3 ? 'text' : 'password'" label="Passwort" class="input-group--focused" @click:append="show3 = !show3"/>
+                                        <!--:rules="[passwordRules.required, passwordRules.min]"-->
+                                        <v-text-field v-model="password" :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" :type="show3 ? 'text' : 'password'" label="Passwort" class="input-group--focused" @click:append="show3 = !show3" :rules="[passwordRules.required, passwordRules.min]"/>
                                     </v-col>
                                 </v-row>
                             </v-container>

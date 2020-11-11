@@ -1,11 +1,11 @@
 <template>
     <v-app>
         <v-main>
-            <Appheader v-show="loggedIn"/>
+            <AppHeader v-show="loggedIn"/>
             <Login v-show="page == 'login'"/>
-            <Listview v-show="page == 'listview'"/>
+            <ListView v-show="page == 'listview'"/>
         </v-main>
-        <Appfooter/>
+        <AppFooter/>
     </v-app>
 </template>
 
@@ -20,10 +20,10 @@ export default {
     name: 'App',
   
     components: {
-        Appheader,
-        Appfooter,
+        AppHeader,
+        AppFooter,
         Login,
-        Listview,
+        ListView,
     },
     
     data:() => ({
