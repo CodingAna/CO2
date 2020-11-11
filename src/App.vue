@@ -43,7 +43,6 @@ export default {
     
     methods: {
         login(payload){
-            //This is a test comment
             console.log(payload);
             if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
                 this.loggedIn = true;
