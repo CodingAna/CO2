@@ -17,6 +17,7 @@ import AppFooter from './components/AppFooter';
 import ListView from './components/ListView';
 
 export default {
+    //Test
     name: 'App',
   
     components: {
