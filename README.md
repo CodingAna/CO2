@@ -1,29 +1,27 @@
-# sensor_projekt
+# CO2
 
-## node_modules
-```
-The node_modules-folder is not included since its too big and there are unused files.
-```
+## Installation
 
-## Project setup
+### Set up vuetify to the project
+Change to the project directory and run the vue-command.
 ```
-npm install
+vue add vuetify
 ```
 
-### Compiles and hot-reloads for development
+### Run the webserver
 ```
 npm run serve
 ```
+Note: This serving mode takes longer to run due to loading every module.
 
-### Compiles and minifies for production
+### Run the webserver for production
 ```
 npm run build
 ```
 
-### Lints and fixes files
+## Credits
 ```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+[Lukas Baginski](https://www.github.com/LukasBaginski/)
+[Lukas Krinke](https://www.github.com/KLukas04/)
+[Simon Engel](https://www.github.com/SirSimon04/)
+and other (not mentioned yet)
