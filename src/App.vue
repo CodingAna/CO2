@@ -40,7 +40,7 @@ export default {
             this.page = 'login';
         });
     },
-    
+
     methods: {
         login(payload){
             console.log(payload);
