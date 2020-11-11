@@ -44,6 +44,7 @@ export default {
     methods: {
         login(payload){
             console.log(payload);
+            console.log(payload['email'] == 'l.b@gew.de');
             if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
                 this.loggedIn = true;
                 this.page = 'listview';
