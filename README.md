@@ -21,5 +21,3 @@ npm run build
 
 ## Credits
 [Lukas Baginski](https://www.github.com/LukasBaginski/), [Lukas Krinke](https://www.github.com/KLukas04/), [Simon Engel](https://www.github.com/SirSimon04/) and others (not mentioned yet)
-
-Hallo Jan
