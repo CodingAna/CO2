@@ -25,6 +25,14 @@
                         </v-form>
                     </v-list-item-subtitle>
                 </v-list-item-content>
+                <v-list-item-avatar
+                  size="180"
+                  >
+                  <img 
+                  src="../assets/gew.svg" 
+                  style="margin: auto;">
+                  </v-list-item-avatar>
+
             </v-list-item>
             <v-card-actions>
                 <v-row>
