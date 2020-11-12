@@ -2,7 +2,7 @@
     <v-container>
         <v-row v-for="satz in messwerte" :key="satz" style="border-top-style: none; border-right-style: none; border-bottom-style: solid; border-left-style: none;">
             <v-col v-for="wert in satz" :key="wert" cols="2" align="center">
-                <v-btn block color="#791014" dark href="Kartenseite.html" v-if="wert == satz[0]">
+                <v-btn block color="#791014" dark v-if="wert == satz[0]" @click='emitData("history")'>
                     {{wert}}
                 </v-btn>
                 <div v-else justify="center">
@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import EventBus from '../EventBus';
+
 export default {
     name: 'ListRow',
     
@@ -31,5 +33,12 @@ export default {
             ["A101", "18","54", "16°C", "12", "Grün"],
         ]
     }),
+
+    methods: {
+        emitData(page) {
+            console.log(page);
+            EventBus.$emit('LOADSITE', {'site': page});
+        },
+    },
 }
 </script>

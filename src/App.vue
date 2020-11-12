@@ -4,6 +4,7 @@
             <AppHeader v-show="loggedIn"/>
             <Login v-show="page == 'login'"/>
             <ListView v-show="page == 'listview'"/>
+            <RoomHistory v-show="page == 'history'"/>
         </v-main>
         <AppFooter/>
     </v-app>
@@ -15,6 +16,7 @@ import Login from './components/Login';
 import AppHeader from './components/AppHeader';
 import AppFooter from './components/AppFooter';
 import ListView from './components/ListView';
+import RoomHistory from './components/RoomHistory';
 
 export default {
     name: 'App',
@@ -24,6 +26,7 @@ export default {
         AppFooter,
         Login,
         ListView,
+        RoomHistory,
     },
     
     data:() => ({
@@ -39,12 +42,14 @@ export default {
             this.loggedIn = false;
             this.page = 'login';
         });
+        EventBus.$on('LOADSITE', (params) => {
+            this.page = params['site'];
+        });
     },
     
     methods: {
         login(payload){
             console.log(payload);
-            console.log(payload['email'] == 'l.b@gew.de');
             if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
                 this.loggedIn = true;
                 this.page = 'listview';
