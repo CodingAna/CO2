@@ -1,3 +1,4 @@
 node_modules
 start-serving.sh
 .DS_Store
+.vscode

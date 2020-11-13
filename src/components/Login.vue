@@ -68,7 +68,7 @@
                 <v-card-title class="title">
                     Terms
                 </v-card-title>
-                <v-card-text v-for="n in 5" :key="n">
+                <v-card-text v-for="n in 5" :key="n"> <!-- The content gets displayed 5 times. Remove this XD -->
                     {{content}}
                 </v-card-text>
                 <v-card-actions>
@@ -124,7 +124,7 @@ export default {
         content: 'Der Friedrich bat mich, dass ich doch, zum Wohle unseres Projektes und der Einhaltung der DSGVO eine Sammlung an Datenschutzzusicherungen ersönne, die sich auf einer bestimmten Seite wiederfänden. So setze ich mich also an den Computer und ersann mit größter Freude und scharfem Verstand, folgendes Verzeichnis an Zusicherungen, die ich dem interessierten Leser und jedem Benutzer der Seite gerne machen würde. So lesen Sie diese Worte und seien Sie versichert, dass Sie ohne Hintergedanken und rein zum Schutze einer besonders schützenswerten Gruppe geschrieben und aufgenommen worden. Wir, der Informatik-LK des Werdener Gymnasiums entwickelte nach reinstem Wissen und Gewissen und unter der Anstrengung siebener, in seltenen Fällen, leistungsstarkter Prozessoren eine Seite, um die Daten der uns zugetragenen und ebenfalls von uns geprüften, eingestellten und platzierten Kleinstcomputer zu sammeln. Diese Daten suchten wir auszuwerten und entwarfen zu diesem Zwecke ein Portal, in das Sie, werter und geschätzer Leser, nun Zugriff erhalten haben. Die einzigen Daten, die wir benutzen sind die derer, die nichts davon wissen.',
     }),
     
-    methods:  {
+    methods: {
         loginclick() {
             const payload = {
                 email: this.email,
