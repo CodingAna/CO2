@@ -1,16 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#import mariadb
+
+#Ist die Route / (o.ä.) nicht komplett überflussig wenn der NodeJS-Server alles regelt?
+
+import mariadb
 import json
 from datetime import datetime
-from flask import Flask, request, jsonify, redirect
+from flask import Flask, request, jsonify, redirect, render_template
 from flask_cors import CORS
 from flask import g
 
 app = Flask(__name__)
 # Cross-Origin-Request zulassen (Kommunikation zwischen Frontend und Backend ermöglichen)
 CORS(app, resources={r'/*': {'origins': '*'}})
-'''
+
 # Datenbank-Verbindung abbauen beim Beenden
 @app.teardown_appcontext
 def close_connection(exception):
@@ -24,13 +27,7 @@ def getDB():
     if db is None:
         db = g.database = mariadb.connect(host="localhost", user="name", password="passwort", database="dbname")
     return db
-'''
-@app.route("/", methods=["GET"])
-def index():
-    #Loginseite
-    return redirect('/login')
-    #return "Up and running"
-'''
+
 app.route("/statusNow/<raumNr>", methods=["GET"])
 def getStatusNow(raum):
     db = getDB()
@@ -63,31 +60,15 @@ def setStatusNow(raum):
         return jsonify({"success":True})
     except mariadb.Error as e:
         return jsonify({"success":False, "errMsg":str(e)})
-'''
-
-@app.route("/home", methods=["GET", 'POST'])
-def home():
-    #ListeView wenn login richtig
-    if request.method == 'GET':
-        print (request.args.get('name'))
-    elif request.method == 'POST':
-        data = json.loads(request.data.decode('UTF-8'))
-        print (data['name'])
-        print (data.get('name'))
-    return "Up and running"
 
 @app.route('/login', methods=['POST'])
 def login():
     data = json.loads(request.data.decode('UTF-8'))
-    #data = request.args
     users = {'test@abc.de': 'Test1234'}
     if data.get('email') in users:
         if data.get('password') == users[data.get('email')]:
-            #return redirect(f'/home?name={data.get("email")}')
-            return json.dumps('{"login": True}')
-    return json.dumps('{"login": False}')
+            return json.dumps({'login': True})
+    return json.dumps({'login': False}) #Use jsonify?
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=62001)
-
-#C:\\Program Files (x86)\\Python38-32\\pythonw.exe
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=62001)

@@ -1,10 +1,5 @@
 <template>
     <v-container>
-        <v-row v-for='value in values' :key='value'>
-            <!--<div style='margin: 0px; padding: 0px; height: {{100 - (value * 100 / values.length)}};'>-->
-            {{value}}
-            <!--</div>-->
-        </v-row>
     </v-container>
 </template>
 
@@ -13,22 +8,24 @@ export default {
     name: 'RoomHistory',
 
     data: () => ({
-        bar_chart_element = '<div class="progress-bar"><div class="progress-track"><div class="progress-fill"><span>%s</span></div></div></div>',
-        values = [536, 241, 799, 901, 432, 756, 100, 0, 2, 999], //get data from server
-        times = [],
-        maxValue = 1000,
-        width = '' + (values.length * 45 + 24),
-        position = 0,
     }),
 
     mounted() {
+        var bar_chart_element = '<div class="progress-bar"><div class="progress-track"><div class="progress-fill"><span>%s</span></div></div></div>';
+        var values = [536, 241, 799, 901, 432, 756, 100, 0, 2, 999]; //get data from server
+        var times = [];
+        var maxValue = 1000;
+        var width = '' + (values.length * 45 + 24);
+        var position = 0;
 
+        //Error: '$' is not defined. How to use this in Vue?
         $('#bar_chart').css({
             'width': width,
             'height': '320px'
         })
 
         values.forEach(function(value) {
+            if (value == 'why is an unused variable an error in js?') {values[0] = value;}
             $('#bar_chart').append(bar_chart_element.replace("%s", [times[position]])); //not working
             position += 1;
         });
@@ -40,7 +37,7 @@ export default {
             $(this).parent().css({
                 'height' : percent,
                 'top' : pTop,
-                'background-color' : 'rgb(' + farbBerechnung(50) + ')'
+                'background-color' : 'rgb(' + this.farbBerechnung(50) + ')'
             });
         position += 1;
       });
@@ -48,9 +45,9 @@ export default {
 
     methods: {
         farbBerechnung(score) {
-            r = 0;
-            g = 0;
-            b = 0;
+            var r = 0;
+            var g = 0;
+            var b = 0;
             if (score > 100) {
                 r = 50 * 2.55;
                 b = 100 * 2.55;
@@ -59,7 +56,7 @@ export default {
                 g = (-0.01 * (score * score) + 100) * 2.55;
             }
             return [r, g, b];
-      }
+        },
     },
 }
 </script>
