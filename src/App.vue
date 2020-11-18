@@ -20,7 +20,6 @@ import RoomHistory from './components/RoomHistory';
 
 export default {
     name: 'App',
-  
     components: {
         AppHeader,
         AppFooter,

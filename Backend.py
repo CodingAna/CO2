@@ -2,12 +2,13 @@
 # -*- coding: utf-8 -*-
 
 #Ist die Route / (o.ä.) nicht komplett überflussig wenn der NodeJS-Server alles regelt?
-
+#kjsfdasflöjadsfljadsölf
 import mariadb
 import json
 from datetime import datetime
 from flask import Flask, request, jsonify, redirect, render_template
 from flask_cors import CORS
+from flask import g
 from flask import g
 
 app = Flask(__name__)
