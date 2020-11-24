@@ -1,6 +1,14 @@
 <template>
     <v-container>
-        <div class="container vertical flat" id="bar_chart">
+        Titel:
+        <div class="container vertical flat" id="bar_chart" v-for="item in values" :key="item">
+            <div class="progress-bar">
+                <div class="progress-track">
+                    <div class="progress-fill">
+                        <span>{{item}}</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </v-container>
 </template>
@@ -10,11 +18,11 @@ export default {
     name: 'RoomHistory',
 
     data: () => ({
-        bar_chart_element: '<div class="progress-bar"><div class="progress-track"><div class="progress-fill"><span>{0}</span></div></div></div>',
+        //bar_chart_element: '<div class="progress-bar"><div class="progress-track"><div class="progress-fill"><span>{0}</span></div></div></div>',
         values: [536, 241, 799, 901, 432, 756, 100, 0, 2, 999], //get data from server
         times: [],
-        width: '' + (this.values.length * 45 + 24),
-        position: 0,
+        //width: '' + (this.values.length * 45 + 24),
+        //position: 0,
         maxValue: 1000,
     }),
 
@@ -29,6 +37,7 @@ export default {
         //Die Historie konnte nicht beendet werden, da dieser Bereich (mounted() {}) nie ausgeführt wurde.
         //Prinzipiell sollte das Programm laufen (Code wurde aus History.html kopiert)
 
+        /*
         document.getElementById('bar_chart').css({
             'width': this.width,
             'height': '320px'
@@ -44,17 +53,21 @@ export default {
             this.position += 1;
         });
 
-        this.position = 0;
+        */
+
+       //This isnt working
+        var position = 0;
         document.getElementsByClassName('.vertical .progress-fill span').each(function(elem) {
-            var percent = (this.values[this.position] / this.maxValue * 100) + '%';
+            var percent = (this.values[position] / this.maxValue * 100) + '%';
             var pTop = 100 - ( percent.slice(0, percent.length - 1) ) + "%"
             elem.parent().css({
                 'height' : percent,
                 'top' : pTop,
                 'background-color' : 'rgb(' + this.farbBerechnung(50) + ')'
             });
-            this.position += 1;
-      });
+            position += 1;
+        });
+        //
     },
 
     methods: {
