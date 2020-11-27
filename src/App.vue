@@ -2,9 +2,9 @@
     <v-app>
         <v-main>
             <AppHeader v-show="loggedIn"/>
-            <Login v-show="page == 'login'"/>
-            <ListView v-show="page == 'listview'"/>
-            <RoomHistory v-show="page == 'history'"/>
+            <Login v-show="page == 'loginy'"/>
+            <ListView v-show="page == 'listviewy'"/>
+            <RoomHistory v-show="true"/>
         </v-main>
         <AppFooter/>
     </v-app>
