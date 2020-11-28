@@ -32,7 +32,6 @@ export default {
         loggedIn: false,
         page: 'login',
     }),
-    //Test
     
     mounted() {
         EventBus.$on('LOGINEVENT', (payload) => {
