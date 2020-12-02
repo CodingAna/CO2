@@ -49,6 +49,34 @@ export default {
     methods: {
         login(payload){
             console.log(payload);
+            const path = 'https://co2.uber.space/login';
+			fetch(path, {
+				credentials: "omit",
+				mode: "cors",
+				method: "post",
+				headers: { "Content-Type": "application/json"},
+				body: payload
+			})
+			.then(resp => {
+				if (resp.status === 200) {
+					return resp.json()
+				} else {
+					console.log("Status: " + resp.login)
+					return Promise.reject("server")
+				}
+			})
+			.then(dataJson => {
+				if(!dataJson.success) {
+					console.log(dataJson); //Rückantwortobjekt ausgeben
+				}
+				else {
+					console.log(dataJson); //Rückantwortobjekt ausgeben
+				}				
+			})
+			.catch(err => {
+				if (err === "server") return
+				console.log(err);
+			})
             if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
                 this.loggedIn = true;
                 this.page = 'listview';
