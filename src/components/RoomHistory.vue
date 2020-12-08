@@ -29,6 +29,18 @@ export default {
     }),
 
     mounted() {
+        EventBus.$on('ROOMDATA', (params) => {
+            console.log('Received from EventBus.$on():' + params);
+            var newValues = []//this.values;
+            params.forEach(function(value) {
+                console.log('Current iteration at:' + value['score']);
+                newValues.push(value['score']);
+            });
+            this.values = newValues;
+            console.log(this.values);
+            this.refreshChart();
+        });
+        /*
         EventBus.$on('LOADSITE', (params) => {
             if (params['site'] == 'history') {
                 //Unschön, da dieser Listener schon in App.vue existiert.
@@ -51,6 +63,7 @@ export default {
                 })
             }
         });
+        */
     },
 
     methods: {
@@ -69,6 +82,22 @@ export default {
         },
 
         refreshChart: () => {
+            console.log('refreshedChart() was called.');
+            console.log('this.values=' + this.values); //????????
+            function fB(score) {
+                var r = 0;
+                var g = 0;
+                var b = 0;
+                if (score > 100) {
+                    r = 50 * 2.55;
+                    b = 100 * 2.55;
+                } else {
+                    r = (-0.01 * (score * score) + (2 * score)) * 2.55;
+                    g = (-0.01 * (score * score) + 100) * 2.55;
+                }
+                return [r, g, b];
+            }
+
             document.getElementsByClassName('progress-bar').forEach(function(elem) {
                 var currentValue = elem.textContent;
                 var mV = 1000;
@@ -76,7 +105,8 @@ export default {
                 var pTop = 100 - ( percent.slice(0, percent.length - 1) ) + "%"
                 elem.style.width = percent;
                 elem.style.right = pTop;
-                var f = this.farbBerechnung(currentValue / mV * 100);
+                var f = fB(currentValue / mV * 100);
+                console.log('fB() returned:' + f);
                 elem.style.backgroundColor = 'rgb(' + f[0] + ',' + f[1] + ',' + f[2] + ')';
             });
             document.getElementById('bar_chart').style.transform = 'rotate(270deg)';

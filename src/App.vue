@@ -43,6 +43,23 @@ export default {
         });
         EventBus.$on('LOADSITE', (params) => {
             this.page = params['site'];
+            if (this.page == 'history') {
+                //Use params['data'] to get the selected room.
+                console.log(params['data']);
+                var path = 'https://co2.uber.space/statusNow/A102' //+ params['data']
+                console.log('Path:' + path);
+                //Change the following room to a var    ____    to get the selected room.
+                fetch(path).then(response => {
+                    if (response.status !== 200) {console.error('Code !== 200:' + response); return}
+                    response.clone();
+                    response.json().then(data => {
+                        console.log('Data before emit:' + data);
+                        EventBus.$emit('ROOMDATA', data);
+                    }).catch(error => {
+                        console.error('An error occured while parsing the string:' + error);
+                    })
+                })
+            }
         });
     },
     

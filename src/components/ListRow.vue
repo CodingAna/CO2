@@ -2,7 +2,7 @@
     <v-container>
         <v-row v-for="satz in messwerte" :key="satz" style="border-top-style: none; border-right-style: none; border-bottom-style: solid; border-left-style: none;">
             <v-col v-for="wert in satz" :key="wert" cols="2" align="center">
-                <v-btn block color="#791014" dark v-if="wert == satz[0]" @click='emitData("history")'>
+                <v-btn block color="#791014" dark v-if="wert == satz[0]" @click="emitData('history', '{{wert}}')"><!-- Das funktioniert so nicht, der String ist dann "{{wert}}" und nicht der Wert der Variable -->
                     {{wert}}
                 </v-btn>
                 <div v-else justify="center">
@@ -35,9 +35,8 @@ export default {
     }),
 
     methods: {
-        emitData(page) {
-            console.log(page);
-            EventBus.$emit('LOADSITE', {'site': page});
+        emitData(page, data) {
+            EventBus.$emit('LOADSITE', {'site': page, 'data': data});
         },
     },
 }
