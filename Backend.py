@@ -2,18 +2,16 @@
 # -*- coding: utf-8 -*-
 
 #Ist die Route / (o.ä.) nicht komplett überflussig wenn der NodeJS-Server alles regelt?
-#kjsfdasflöjadsfljadsölf
 import mariadb
 import json
 from datetime import datetime
 from flask import Flask, request, jsonify, redirect, render_template
 from flask_cors import CORS
 from flask import g
-from flask import g
 
 app = Flask(__name__)
 # Cross-Origin-Request zulassen (Kommunikation zwischen Frontend und Backend ermöglichen)
-CORS(app, resources={r'/*': {'origins': '*'}})
+CORS(app, resources={r'/*': {'Access-Control-Allow-Origin': '*'}})
 
 # Datenbank-Verbindung abbauen beim Beenden
 @app.teardown_appcontext
@@ -24,26 +22,39 @@ def close_connection(exception):
 
 # Datenbank-Zugriff erfragen        
 def getDB():
-    db = g.get("database", None)
+    db = g.get("co2", None)
     if db is None:
-        db = g.database = mariadb.connect(host="localhost", user="name", password="passwort", database="dbname")
+        db = g.database = mariadb.connect(host="localhost", user="co2", password="apHxU48Ac:IH-Znrhhx-", database="co2")
+    print("Database gefunden")
     return db
 
-app.route("/statusNow/<raumNr>", methods=["GET"])
-def getStatusNow(raum):
+@app.route("/", methods=["GET"])
+def index():
+    return redirect("/login")
+
+@app.route("/statusNow/<raumNr>", methods=["GET"])
+def getStatusNow(raumNr):
     db = getDB()
     cursor = db.cursor()
     jetzt = datetime.now().strftime("%Y-%m-%d %H:%M")
-    cursor.execute("""SELECT co2, temp, feuchtigkeit, lautstaerke
-                    FROM Raum
-                    WHERE timestamp = ?
-                    AND nr=?; """, (jetzt, raumNr))
+    cursor.execute("SELECT id, raum, temp, co2, h2o, score, datumuhrzeit FROM Messwerte WHERE raum=?", (raumNr, ))
     ergebnis = []
-    for (co2, temp, feuchtigkeit, lautstaerke) in cursor:
-        ergebnis.append({"CO2":co2, "temp":temp, "feuchtigkeit":feuchtigkeit, "lautstaerke":lautstaerke})
-    return jsonify(ergebnis) 
+    #for (id, raum, temp, co2, h20, score, datumuhrzeit) in cursor:
+     #   ergebnis.append({"id":id, "raum":raum, "temp":temp, "co2":co2, "h2O":h2O, "score":score, "datumuhrzeit":datumuhrzeit}) 
+    for (id, raum, temp, co2, h2o, score, datumuhrzeit) in cursor:
+        ergebnis.append({"Raum": raum, "ID": id, "Temp": temp, "co2": co2, "h2o": h2o, "score": score, "DatumZeit": datumuhrzeit})
+    return jsonify(ergebnis)
 
-app.route("/statusNow", methods=["POST"])
+@app.route("/postNow/<raumNr>/<temp>", methods=["GET"])
+def postNow(raumNr, temp):
+    db = getDB()
+    cursor = db.cursor()
+    jetzt = datetime.now().strftime("%Y-%m-%d %H:%M")
+    cursor.execute("INSERT INTO Messwerte(raum, temp, DatumUhrzeit) VALUES(?,?,?);", (raumNr, temp, jetzt))
+    db.commit()
+    return 'success'
+
+@app.route("/statusNow", methods=["POST"])
 def setStatusNow(raum):
     db = getDB()
     cursor = db.cursor()
@@ -54,7 +65,7 @@ def setStatusNow(raum):
     temp = post_data.get("temp")
     feuchtigkeit = post_data.get("feuchtigkeit")
     lautstaerke = post_data.get("lautstaerke")
-    try:     
+    try:
         cursor.execute("""INSERT INTO Raum(nr, co2, temp, feuchtigkeit, lautstaerke) 
                           VALUES(?, ?, ?, ?);""", (nr, co2, temp, feuchtigkeit, lautstaerke))
         db.commit()
@@ -70,6 +81,18 @@ def login():
         if data.get('password') == users[data.get('email')]:
             return json.dumps({'login': True})
     return json.dumps({'login': False}) #Use jsonify?
+    #return 'Hallo'
+@app.route('/db', methods=["GET"])
+def db():
+        db = getDB()
+        cursor = db.cursor()
+        cursor.execute("""
+        SELECT raum FROM Messwerte
+        """)
+        ergebnis = []
+        for raum in cursor:
+                ergebnis.append({"Raum:":raum})
+        return ergebnis[0]
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=62001)
