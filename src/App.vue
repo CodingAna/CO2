@@ -66,13 +66,14 @@ export default {
     methods: {
         login(payload){
             console.log(payload);
+            const datatoSend =JSON.stringify({"email": "test@abc.de", "password": "Test1234"});
             const path = 'https://co2.uber.space/login';
 			fetch(path, {
 				credentials: "omit",
 				mode: "cors",
 				method: "post",
 				headers: { "Content-Type": "application/json"},
-				body: payload
+				body: datatoSend
 			})
 			.then(resp => {
 				if (resp.status === 200) {
@@ -84,10 +85,10 @@ export default {
 			})
 			.then(dataJson => {
 				if(!dataJson.success) {
-					console.log(dataJson); //Rückantwortobjekt ausgeben
+					console.log(dataJson.login); //Rückantwortobjekt ausgeben
 				}
 				else {
-					console.log(dataJson); //Rückantwortobjekt ausgeben
+					console.log(dataJson.login); //Rückantwortobjekt ausgeben
 				}				
 			})
 			.catch(err => {
