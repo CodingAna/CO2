@@ -1,14 +1,14 @@
 <template>
     <v-container>
-        Titel:
+        <p id='title'></p>
         <div class="container vertical flat" id="bar_chart">
-            <div class="progress-bar" v-for="item in values" :key="item">
+            <!--<div id='pb' class="progress-bar" v-for="item in values" :key="item">
                 <div class="progress-track">
                     <div class="progress-fill">
                         <span class='span'>{{item}}</span>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </v-container>
 </template>
@@ -20,50 +20,18 @@ export default {
     name: 'RoomHistory',
 
     data: () => ({
-        //bar_chart_element: '<div class="progress-bar"><div class="progress-track"><div class="progress-fill"><span>{0}</span></div></div></div>',
-        values: [536, 241, 799, 901, 432, 756, 100, 0, 2, 999], //get data from server
-        times: [],
-        //width: '' + (this.values.length * 45 + 24),
-        //position: 0,
         maxValue: 1000,
     }),
 
     mounted() {
         EventBus.$on('ROOMDATA', (params) => {
-            console.log('Received from EventBus.$on():' + params);
-            var newValues = []//this.values;
+            document.getElementById('title').innerHTML = params[0]['Raum'];
+            var values = []
             params.forEach(function(value) {
-                console.log('Current iteration at:' + value['score']);
-                newValues.push(value['score']);
-            });
-            this.values = newValues;
-            console.log(this.values);
-            this.refreshChart();
+                values.push(value['score']);
+            })
+            this.refreshChart(values);
         });
-        /*
-        EventBus.$on('LOADSITE', (params) => {
-            if (params['site'] == 'history') {
-                //Unschön, da dieser Listener schon in App.vue existiert.
-                //Die Daten vielleicht in den EventBus senden und hier empfangen?
-                console.log('Test');
-                console.warn(this.farbBerechnung(50));
-                console.log('After');
-                //
-                fetch('https://co2.uber.space/statusNow/A102').then(response => {
-                    if (response.status !== 200) {console.warn('Code !== 200:' + response); return}
-                    response.clone();
-                    response.json().then(data => {
-                        //[{"DatumZeit":"Wed, 18 Nov 2020 12:33:33 GMT", "ID":1, "Raum":"A102", "Temp":18.0, "co2":700.0, "h2o":55.0, "score":55.0}]
-                        this.values = [-1];
-                        this.values[0] = data[0]['score'];
-                        this.refreshChart();
-                    }).catch(error => {
-                        console.warn('Error while parsing json:' + error.message);
-                    })
-                })
-            }
-        });
-        */
     },
 
     methods: {
@@ -81,9 +49,27 @@ export default {
             return [r, g, b];
         },
 
-        refreshChart: () => {
-            console.log('refreshedChart() was called.');
-            console.log('this.values=' + this.values); //????????
+        refreshChart: (values) => {
+            values.forEach(function(value) {
+                var tag_progress_bar = document.createElement('div');
+                tag_progress_bar.className = 'progress-bar';
+
+                var tag_progress_track = document.createElement('div');
+                tag_progress_track.className = 'progess-track';
+                
+                var tag_progress_fill = document.createElement('div');
+                tag_progress_fill.className = 'progress-fill';
+                
+                var tag_span = document.createElement('span');
+                tag_span.className = 'span';
+                tag_span.innerHTML = value;
+                
+                tag_progress_fill.appendChild(tag_span);
+                tag_progress_track.appendChild(tag_progress_fill);
+                tag_progress_bar.appendChild(tag_progress_track);
+                document.getElementById("bar_chart").appendChild(tag_progress_bar);
+            })
+
             function fB(score) {
                 var r = 0;
                 var g = 0;
@@ -97,20 +83,20 @@ export default {
                 }
                 return [r, g, b];
             }
-
+            
+            var position = 0;
             document.getElementsByClassName('progress-bar').forEach(function(elem) {
-                var currentValue = elem.textContent;
+                var currentValue = values[position];
                 var mV = 1000;
-                var percent = (currentValue / mV * 100) + '%';
-                var pTop = 100 - ( percent.slice(0, percent.length - 1) ) + "%"
+                var percent = (currentValue / mV * 100 * 5) + '%';
+                //var pTop = (700 - percent.slice(0, percent.length - 1)) + "%"
                 elem.style.width = percent;
-                elem.style.right = pTop;
-                var f = fB(currentValue / mV * 100);
-                console.log('fB() returned:' + f);
+                var f = fB(currentValue);
                 elem.style.backgroundColor = 'rgb(' + f[0] + ',' + f[1] + ',' + f[2] + ')';
+                position += 1;
             });
             document.getElementById('bar_chart').style.transform = 'rotate(270deg)';
-            document.getElementById('bar_chart').style.width = '45%';
+            document.getElementById('bar_chart').style.width = '50%';
             document.getElementById('bar_chart').style.padding = '64px';
         }
     },

@@ -46,7 +46,7 @@ export default {
             if (this.page == 'history') {
                 //Use params['data'] to get the selected room.
                 console.log(params['data']);
-                var path = 'https://co2.uber.space/statusNow/A102' //+ params['data']
+                var path = 'https://co2.uber.space/statusNow/' + params['data']
                 console.log('Path:' + path);
                 //Change the following room to a var    ____    to get the selected room.
                 fetch(path).then(response => {
@@ -99,10 +99,10 @@ export default {
 				if (err === "server") return
 				console.log(err);
 			})
-            if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
+            //if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
                 this.loggedIn = true;
                 this.page = 'listview';
-            }
+            //}
         },
     },
 };
