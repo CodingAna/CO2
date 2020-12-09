@@ -84,10 +84,10 @@ export default {
 			})
 			.then(dataJson => {
 				if(!dataJson.success) {
-					console.log(dataJson); //Rückantwortobjekt ausgeben
+					console.log(dataJson.login); //Rückantwortobjekt ausgeben
 				}
 				else {
-					console.log(dataJson); //Rückantwortobjekt ausgeben
+					console.log(dataJson.login); //Rückantwortobjekt ausgeben
 				}				
 			})
 			.catch(err => {
