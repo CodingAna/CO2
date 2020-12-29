@@ -45,26 +45,19 @@ export default {
             this.page = params['site'];
             var path = '';
             if (this.page == 'listview') {
-                //Use params['data'] to get the selected room.
-                console.log(params['data']);
-                path = 'https://co2.uber.space/statusNow/' + params['data']
-                console.log('Path:' + path);
-                //Change the following room to a var    ____    to get the selected room.
+                path = 'https://co2.uber.space/db';
                 fetch(path).then(response => {
                     if (response.status !== 200) {console.error('Code !== 200:' + response); return}
                     response.clone();
                     response.json().then(data => {
                         console.log('Data before emit:' + data);
-                        EventBus.$emit('ROOMDATA', data);
+                        EventBus.$emit('LOADROOMS', data['Raeume']);
                     }).catch(error => {
                         console.error('An error occured while parsing the string:' + error);
                     })
                 })
             } else if (this.page == 'history') {
-                //Use params['data'] to get the selected room.
-                console.log(params['data']);
-                path = 'https://co2.uber.space/statusNow/' + params['data']
-                console.log('Path:' + path);
+                path = 'https://co2.uber.space/statusNow/' + params['data'];
                 //Change the following room to a var    ____    to get the selected room.
                 fetch(path).then(response => {
                     if (response.status !== 200) {console.error('Code !== 200:' + response); return}
@@ -94,10 +87,10 @@ export default {
 			})
 			.then(resp => {
 				if (resp.status === 200) {
-					return resp.json()
+					return resp.json();
 				} else {
-					console.log("Status: " + resp.login)
-					return Promise.reject("server")
+					console.log("Status: " + resp.login);
+					return Promise.reject("server");
 				}
 			})
 			.then(dataJson => {
@@ -105,20 +98,22 @@ export default {
 				if (dataJson.login) {
                     console.log(dataJson.login); //Rückantwortobjekt ausgeben
                     this.loggedIn = true;
-                    this.page = 'listview';
+                    //this.page = 'listview';
                     console.log('side load');
+                    EventBus.$emit('LOADSITE', {'site': 'listview', 'data': null});
                 }			
                 else {
-                    console.log('fehler')
+                    console.log('fehler');
                 }	
 			})
 			.catch(err => {
-				if (err === "server") return
+				if (err === "server") return;
 				console.log(err);
 			})
             //if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
                 this.loggedIn = true;
-                this.page = 'listview';
+                //this.page = 'listview';
+                EventBus.$emit('LOADSITE', {'site': 'listview', 'data': null});
             //}
         },
     },
