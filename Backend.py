@@ -88,10 +88,10 @@ def login():
 def db():
 	db = getDB()
 	cursor = db.cursor()
-	cursor.execute("SELECT DISTINCT raum FROM Messwerte")
-	ergebnis = []
+	cursor.execute("SELECT DISTINCT raum FROM Messwerte ORDER BY raum ASC")
+	ergebnis = {'Raeume': []}
 	for raum in cursor:
-		ergebnis.append({"Raum:":raum})
+		ergebnis['Raeume'].append(raum)
 	return jsonify(ergebnis)
 
 @app.route("/app/statusNow/<raumNr>", methods=["GET"])
