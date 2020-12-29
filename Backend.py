@@ -43,6 +43,7 @@ def getStatusNow(raumNr):
      #   ergebnis.append({"id":id, "raum":raum, "temp":temp, "co2":co2, "h2O":h2O, "score":score, "datumuhrzeit":datumuhrzeit}) 
     for (id, raum, temp, co2, h2o, score, datumuhrzeit) in cursor:
         ergebnis.append({"Raum": raum, "ID": id, "Temp": temp, "co2": co2, "h2o": h2o, "score": score, "DatumZeit": datumuhrzeit})
+
     return jsonify(ergebnis) 
 
 @app.route("/postNow/<raumNr>/<temp>", methods=["GET"])
@@ -54,6 +55,16 @@ def postNow(raumNr, temp):
     db.commit()
     return 'success'
 
+    return jsonify(ergebnis)
+
+@app.route("/postNow/<raumNr>/<temp>", methods=["GET"])
+def postNow(raumNr, temp):
+    db = getDB()
+    cursor = db.cursor()
+    jetzt = datetime.now().strftime("%Y-%m-%d %H:%M")
+    cursor.execute("INSERT INTO Messwerte(raum, temp, DatumUhrzeit) VALUES(?,?,?);", (raumNr, temp, jetzt))
+    db.commit()
+    return 'success'
 
 @app.route("/statusNow", methods=["POST"])
 def setStatusNow(raum):
@@ -66,7 +77,7 @@ def setStatusNow(raum):
     temp = post_data.get("temp")
     feuchtigkeit = post_data.get("feuchtigkeit")
     lautstaerke = post_data.get("lautstaerke")
-    try:     
+    try:
         cursor.execute("""INSERT INTO Raum(nr, co2, temp, feuchtigkeit, lautstaerke) 
                           VALUES(?, ?, ?, ?);""", (nr, co2, temp, feuchtigkeit, lautstaerke))
         db.commit()
@@ -87,9 +98,7 @@ def login():
 def db():
 	db = getDB()
 	cursor = db.cursor()
-	cursor.execute("""
-	SELECT DISTINCT raum FROM Messwerte
-	""")
+	cursor.execute("SELECT DISTINCT raum FROM Messwerte")
 	ergebnis = []
 	for raum in cursor:
 		ergebnis.append({"Raum:":raum})
@@ -107,7 +116,6 @@ def appGetStatusNow(raumNr):
     for (id, raum, temp, co2, h2o, score, datumuhrzeit) in cursor:
         ergebnis.append({"Raum": raum, "ID": id, "Temp": temp, "co2": co2, "h2o": h2o, "score": score, "DatumZeit": datumuhrzeit})
     return jsonify(ergebnis)
-
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=62001)

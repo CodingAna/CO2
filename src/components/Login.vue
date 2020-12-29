@@ -3,12 +3,8 @@
         <v-card class="mx-auto" max-width="600" outlined>
             <v-list-item three-line>
                 <v-list-item-content>
-                    <div class="overline mb-4">
-                        Schulprojekt CO2
-                    </div>
-                    <v-list-item-title class="headline mb-1">
-                        Anmeldung
-                    </v-list-item-title>
+                    <div class="overline mb-4">Schulprojekt CO2</div>
+                    <v-list-item-title class="headline mb-1">Anmeldung</v-list-item-title>
                     <v-list-item-subtitle>
                         <v-form v-model="valid">
                             <v-container>
@@ -18,17 +14,15 @@
                                     </v-col>
                                     <v-col cols="12" md="12">
                                         <!--:rules="[passwordRules.required, passwordRules.min]"-->
-                                        <v-text-field v-model="password" :append-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'" :type="show3 ? 'text' : 'password'" label="Passwort" class="input-group--focused" @click:append="show3 = !show3" :rules="[passwordRules.required, passwordRules.min]"/>
+                                        <v-text-field v-model="password" :append-icon="passwordHidden ? 'mdi-eye-off' : 'mdi-eye'" :type="passwordHidden ? 'password' : 'text'" label="Passwort" class="input-group--focused" @click:append="passwordHidden = !passwordHidden" :rules="[passwordRules.required, passwordRules.min]"/>
                                     </v-col>
                                 </v-row>
                             </v-container>
                         </v-form>
                     </v-list-item-subtitle>
                 </v-list-item-content>
-                <v-list-item-avatar
-                  size="180"
-                  >
-                  <img 
+                <v-list-item-avatar size="180">
+                    <img 
                   src="../assets/gew.svg" 
                   style="margin: auto;">
                   </v-list-item-avatar>
@@ -113,7 +107,7 @@ export default {
             v => /.+@.+/.test(v) || 'Bitte gültige E-Mail eingeben',
         ],
 
-        show3: false,
+        passwordHidden: true,
         passwordRules: {
             required: value => !!value || 'Es muss ein Passwort eingegeben werden',
             min: v => v.length >= 8 || 'Passwort muss mindestens 8 Zeichen lang sein',

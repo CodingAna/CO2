@@ -20,7 +20,6 @@ import RoomHistory from './components/RoomHistory';
 
 export default {
     name: 'App',
-  
     components: {
         AppHeader,
         AppFooter,
@@ -44,16 +43,83 @@ export default {
         });
         EventBus.$on('LOADSITE', (params) => {
             this.page = params['site'];
+            var path = '';
+            if (this.page == 'listview') {
+                //Use params['data'] to get the selected room.
+                console.log(params['data']);
+                path = 'https://co2.uber.space/statusNow/' + params['data']
+                console.log('Path:' + path);
+                //Change the following room to a var    ____    to get the selected room.
+                fetch(path).then(response => {
+                    if (response.status !== 200) {console.error('Code !== 200:' + response); return}
+                    response.clone();
+                    response.json().then(data => {
+                        console.log('Data before emit:' + data);
+                        EventBus.$emit('ROOMDATA', data);
+                    }).catch(error => {
+                        console.error('An error occured while parsing the string:' + error);
+                    })
+                })
+            } else if (this.page == 'history') {
+                //Use params['data'] to get the selected room.
+                console.log(params['data']);
+                path = 'https://co2.uber.space/statusNow/' + params['data']
+                console.log('Path:' + path);
+                //Change the following room to a var    ____    to get the selected room.
+                fetch(path).then(response => {
+                    if (response.status !== 200) {console.error('Code !== 200:' + response); return}
+                    response.clone();
+                    response.json().then(data => {
+                        console.log('Data before emit:' + data);
+                        EventBus.$emit('ROOMDATA', data);
+                    }).catch(error => {
+                        console.error('An error occured while parsing the string:' + error);
+                    })
+                })
+            }
         });
     },
     
     methods: {
         login(payload){
+            console.log(JSON.stringify(payload));
             console.log(payload);
-            if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
+            const path = 'https://co2.uber.space/login';
+			fetch(path, {
+				credentials: "omit",
+				mode: "cors",
+				method: "post",
+				headers: { "Content-Type": "application/json"},
+				body: JSON.stringify(payload)
+			})
+			.then(resp => {
+				if (resp.status === 200) {
+					return resp.json()
+				} else {
+					console.log("Status: " + resp.login)
+					return Promise.reject("server")
+				}
+			})
+			.then(dataJson => {
+				
+				if (dataJson.login) {
+                    console.log(dataJson.login); //Rückantwortobjekt ausgeben
+                    this.loggedIn = true;
+                    this.page = 'listview';
+                    console.log('side load');
+                }			
+                else {
+                    console.log('fehler')
+                }	
+			})
+			.catch(err => {
+				if (err === "server") return
+				console.log(err);
+			})
+            //if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
                 this.loggedIn = true;
                 this.page = 'listview';
-            }
+            //}
         },
     },
 };
