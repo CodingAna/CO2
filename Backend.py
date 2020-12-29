@@ -83,6 +83,7 @@ def login():
             return json.dumps({'login': True})
     return json.dumps({'login': False}) #Use jsonify?
     #return 'Hallo'
+
 @app.route('/db', methods=["GET"])
 def db():
 	db = getDB()
@@ -91,7 +92,7 @@ def db():
 	ergebnis = []
 	for raum in cursor:
 		ergebnis.append({"Raum:":raum})
-	return ergebnis
+	return jsonify(ergebnis)
 
 @app.route("/app/statusNow/<raumNr>", methods=["GET"])
 def appGetStatusNow(raumNr):
