@@ -91,9 +91,9 @@ def db():
 	cursor.execute("SELECT DISTINCT raum FROM Messwerte ORDER BY raum ASC")
 	ergebnis = []
 	for raum in cursor:
-		ergebnis.append(raum)
-    with open('./test.log', 'w') as f:
-        f.write(str(ergebnis))
+	    ergebnis.append(raum[0])
+	with open('./test.log', 'w') as f:
+       	    f.write(str(ergebnis))
 	return jsonify(ergebnis)
 
 @app.route("/app/statusNow/<raumNr>", methods=["GET"])
