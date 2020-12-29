@@ -89,10 +89,10 @@ def db():
 	db = getDB()
 	cursor = db.cursor()
 	cursor.execute("SELECT DISTINCT raum FROM Messwerte ORDER BY raum ASC")
-	ergebnis = {'Raeume': []}
+	ergebnis = []
 	for raum in cursor:
-		ergebnis['Raeume'].append(raum)
-	return jsonify(ergebnis)
+		ergebnis.append(raum)
+	return jsonify({'Raeume': ergebnis})
 
 @app.route("/app/statusNow/<raumNr>", methods=["GET"])
 def appGetStatusNow(raumNr):
