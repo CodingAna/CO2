@@ -92,7 +92,9 @@ def db():
 	ergebnis = []
 	for raum in cursor:
 		ergebnis.append(raum)
-	return jsonify({'Raeume': ergebnis})
+    with open('./test.log', 'w') as f:
+        f.write(str(ergebnis))
+	return jsonify(ergebnis)
 
 @app.route("/app/statusNow/<raumNr>", methods=["GET"])
 def appGetStatusNow(raumNr):
