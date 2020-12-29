@@ -1,5 +1,6 @@
 <template>
     <v-container>
+        <button id='back' style='border-style: solid; border-color: #000000; border-radius: 10px; text-align: center;'><v-icon>mdi-chevron-left</v-icon> Zurück</button>
         <p id='title'></p>
         <div class="container vertical flat" id="bar_chart">
             <!--<div id='pb' class="progress-bar" v-for="item in values" :key="item">
@@ -24,9 +25,13 @@ export default {
     }),
 
     mounted() {
+        document.getElementById('back').onclick = function() {
+            EventBus.$emit('LOADSITE', {'site': 'listview', 'data': null});
+            document.getElementById("bar_chart").innerHTML = '';
+        }
         EventBus.$on('ROOMDATA', (params) => {
             document.getElementById('title').innerHTML = params[0]['Raum'];
-            var values = []
+            var values = [];
             params.forEach(function(value) {
                 values.push(value['score']);
             })
