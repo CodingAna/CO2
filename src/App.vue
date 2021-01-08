@@ -98,10 +98,9 @@ export default {
 				if (dataJson.login) {
                     console.log(dataJson.login); //Rückantwortobjekt ausgeben
                     this.loggedIn = true;
-                    //this.page = 'listview';
                     console.log('side load');
                     EventBus.$emit('LOADSITE', {'site': 'listview', 'data': null});
-                }			
+                }
                 else {
                     console.log('fehler');
                 }	
@@ -110,11 +109,10 @@ export default {
 				if (err === "server") return;
 				console.log(err);
 			})
-            //if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
+            if (payload['email'] == 'l.b@gew.de' && payload['password'] == 'Test1234') {
                 this.loggedIn = true;
-                //this.page = 'listview';
                 EventBus.$emit('LOADSITE', {'site': 'listview', 'data': null});
-            //}
+            }
         },
     },
 };

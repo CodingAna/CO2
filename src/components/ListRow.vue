@@ -35,13 +35,6 @@ export default {
     }),
 
     mounted() {
-        function emitData2(page, data) {
-            console.log('called emitData2');
-            EventBus.$emit('LOADSITE', {'site': page, 'data': data});
-        }
-        function test(room) {
-            console.log('test() with param: ' + room);
-        }
         EventBus.$on('LOADROOMS', (rooms) => {
             console.log('event loadrooms');
             document.getElementById('vcontainer').innerHTML = '';
@@ -55,13 +48,15 @@ export default {
                             var roomData = data[data.length-1];
                             var roomString = '';
                             Object.keys(roomData).forEach(function(key) {
-                                roomString += '<div v-else justify="center">' + roomData[key] + '</div>';
+                                if (key != 'Raum' && key != 'DatumZeit')
+                                roomString += '<div justify="center" class="col col-2">' + roomData[key] + '</div>';
+                                //
                             });
                             //{"DatumZeit":"Tue, 29 Dec 2020 11:37:55 GMT","ID":102,"Raum":"A102","Temp":23.0,"co2":900.0,"h2o":70.0,"score":60.0}
-                            document.getElementById('vcontainer').innerHTML += '<div class="row" style="border-top-style: none; border-right-style: none; border-bottom-style: solid; border-left-style: none;"><div class="col col-2" align="center"><button id="room' + roomData["Raum"] + '" type="button" class="v-btn v-btn--block v-btn--contained theme--dark v-size--default" style="background-color: rgb(121, 16, 20); border-color: rgb(121, 16, 20);"><span class="v-btn__content">' + roomData["Raum"] + '</span></button>' + roomString + '</div></div>';
-                            console.log('room' + room);
+                            var roomTest = "window.emitData(\'" + room + "\');";
+                            document.getElementById('vcontainer').innerHTML += '<div id="vrow" class="row" style="border-top-style: none; border-right-style: none; border-bottom-style: solid; border-left-style: none;"><div align="center" class="col col-2"><button onclick="' + roomTest + '" id="room' + roomData["Raum"] + '" type="button" class="v-btn v-btn--block v-btn--contained theme--dark v-size--default" style="background-color: rgb(121, 16, 20); border-color: rgb(121, 16, 20);"><span class="v-btn__content">' + roomData["Raum"] + '</span></button></div>' + roomString + '</div>';
                             //onclick wird entweder direkt ausgeführt (beim laden) oder gar nicht, wenn statt test() eine function() {} angegeben wird
-                            document.getElementById('room' + room).onclick = test(room);
+                            //document.getElementById('room' + room).onclick = test(room);
                         }).catch(error => {
                             console.error('An error occured while parsing the string:' + error);
                         });
@@ -77,5 +72,10 @@ export default {
             EventBus.$emit('LOADSITE', {'site': page, 'data': data});
         },
     },
+}
+
+window.emitData = function(data) {
+    console.log('called emitData');
+    EventBus.$emit('LOADSITE', {'site': 'history', 'data': data});
 }
 </script>
