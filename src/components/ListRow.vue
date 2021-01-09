@@ -21,16 +21,16 @@ export default {
     
     data: () => ({
         messwerte: [
-            ["A100", "89,99", "54", "16°C", "100", "Rot"],
-            ["A101", "14","54", "16°C", "12", "Grün"],
-            ["A100", "89,98", "54", "16°C", "100", "Rot"],
-            ["A101", "20","54", "16°C", "12", "Grün"],
-            ["A100", "89,97", "54", "16°C", "100", "Rot"],
-            ["A101", "16","54", "16°C", "12", "Grün"],
-            ["A100", "86,99", "54", "16°C", "100", "Rot"],
-            ["A101", "17","54", "16°C", "12", "Grün"],
-            ["A100", "85,99", "54", "16°C", "100", "Rot"],
-            ["A101", "18","54", "16°C", "12", "Grün"],
+            /*["A100", "89,99", "54", "16°C", "Rot"],
+            ["A101", "14","54", "16°C", "Grün"],
+            ["A100", "89,98", "54", "16°C", "Rot"],
+            ["A101", "20","54", "16°C", "Grün"],
+            ["A100", "89,97", "54", "16°C", "Rot"],
+            ["A101", "16","54", "16°C", "Grün"],
+            ["A100", "86,99", "54", "16°C", "Rot"],
+            ["A101", "17","54", "16°C", "Grün"],
+            ["A100", "85,99", "54", "16°C", "Rot"],
+            ["A101", "18","54", "16°C", "Grün"],*/
         ]
     }),
 
@@ -48,9 +48,13 @@ export default {
                             var roomData = data[data.length-1];
                             var roomString = '';
                             Object.keys(roomData).forEach(function(key) {
-                                if (key != 'Raum' && key != 'DatumZeit')
-                                roomString += '<div justify="center" class="col col-2">' + roomData[key] + '</div>';
-                                //
+                                if (key != 'ID' && key != 'Raum' && key != 'DatumZeit') {
+                                    var changed = roomData[key];
+                                    if (key == 'Temp') changed += '°C';
+                                    if (key == 'co2') changed = roomData[key] + 'ppcm³';
+                                    if (key == 'h2o') changed = (0 + roomData[key] * 100) + '%';
+                                    roomString += '<div justify="center" class="col col-2">' + changed + '</div>';
+                                }
                             });
                             //{"DatumZeit":"Tue, 29 Dec 2020 11:37:55 GMT","ID":102,"Raum":"A102","Temp":23.0,"co2":900.0,"h2o":70.0,"score":60.0}
                             var roomTest = "window.emitData(\'" + room + "\');";
