@@ -50,9 +50,9 @@ export default {
                             Object.keys(roomData).forEach(function(key) {
                                 if (key != 'ID' && key != 'Raum' && key != 'DatumZeit') {
                                     var changed = roomData[key];
-                                    if (key == 'Temp') changed += '°C';
-                                    if (key == 'co2') changed = roomData[key] + 'ppcm³';
-                                    if (key == 'h2o') changed = (0 + roomData[key] * 100) + '%';
+                                    //if (key == 'Temp') changed += '°C'; //Or change this in ListHeader to show it only once?
+                                    //if (key == 'co2') changed = roomData[key] + 'ppcm³';
+                                    if (key == 'h2o') changed = (0 + roomData[key] * 100);
                                     roomString += '<div justify="center" class="col col-2">' + changed + '</div>';
                                 }
                             });

@@ -15,7 +15,7 @@ export default {
     name: 'ListHeader',
     
     data: () => ({
-        header: ["Raum", "Temperatur", "CO2", "Luftfeuchtigkeit", "Score"],
+        header: ["Raum", "Temperatur (°C)", "CO2 (ppcm³)", "Luftfeuchtigkeit (%)", "Score"],
     }),
 }
 </script>
