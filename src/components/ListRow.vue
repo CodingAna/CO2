@@ -25,7 +25,7 @@ export default {
     mounted() {
         EventBus.$on('LOADROOMS', (rooms) => {
             console.log('rooms: ' + rooms);
-            fetchedRoomData = []; //TODO: Add roomdata into this array and sort it after the last call of fetch (End of for-loop). Then add the (sorted) data in the "v-container"
+            var fetchedRoomData = []; //TODO: Add roomdata into this array and sort it after the last call of fetch (End of for-loop). Then add the (sorted) data in the "v-container"
             document.getElementById('vcontainer').innerHTML = '';
             for (var i=0; i<rooms.length; i++) {
                 var room = rooms[i];
