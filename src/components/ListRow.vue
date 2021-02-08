@@ -37,50 +37,30 @@ export default {
                     response.clone();
                     response.json().then(data => {
                         var roomData = data[data.length-1];
-                        fetchedRoomData.push(roomData);
+                        var roomString = '';
+                        Object.keys(roomData).forEach(function(key) {
+                            if (key != 'ID' && key != 'Raum' && key != 'DatumZeit') {
+                                var changed = roomData[key];
+                                //if (key == 'Temp') changed += '°C'; //Or change this in ListHeader to show it only once?
+                                //if (key == 'co2') changed = roomData[key] + 'ppcm³';
+                                if (key == 'h2o') changed = (0 + roomData[key] * 100);
+                                roomString += '<div justify="center" class="col col-2">' + changed + '</div>';
+                            }
+                        });
+                        //{"DatumZeit":"Tue, 29 Dec 2020 11:37:55 GMT","ID":102,"Raum":"A102","Temp":23.0,"co2":900.0,"h2o":70.0,"score":60.0}
+                        var roomTest = "window.emitData(\'" + room + "\');";
+                        document.getElementById('vcontainer').innerHTML += '<div id="vrow" class="row" style="border-top-style: none; border-right-style: none; border-bottom-style: solid; border-left-style: none;"><div align="center" class="col col-2"><button onclick="' + roomTest + '" id="room' + roomData["Raum"] + '" type="button" class="v-btn v-btn--block v-btn--contained theme--dark v-size--default" style="background-color: rgb(121, 16, 20); border-color: rgb(121, 16, 20);"><span class="v-btn__content">' + roomData["Raum"] + '</span></button></div>' + roomString + '</div>';
+                        //onclick wird entweder direkt ausgeführt (beim laden) oder gar nicht, wenn statt test() eine function() {} angegeben wird
+                        //document.getElementById('room' + room).onclick = test(room);
                     }).catch(error => {
                         console.error('An error occured while parsing the string:' + error);
                     });
                 });
             }
-            console.log(fetchedRoomData);
-            fetchedRoomData = this.sortRooms(fetchedRoomData);
-            console.log(fetchedRoomData);
-            for (i=0; i<fetchedRoomData.length; i++) {
-                var roomString = '';
-                Object.keys(fetchedRoomData).forEach(function(key) {
-                    if (key != 'ID' && key != 'Raum' && key != 'DatumZeit') {
-                        var changed = fetchedRoomData[key];
-                        //if (key == 'Temp') changed += '°C'; //Or change this in ListHeader to show it only once?
-                        //if (key == 'co2') changed = fetchedRoomData[key] + 'ppcm³';
-                        if (key == 'h2o') changed = (0 + fetchedRoomData[key] * 100);
-                        roomString += '<div justify="center" class="col col-2">' + changed + '</div>';
-                    }
-                });
-                //{"DatumZeit":"Tue, 29 Dec 2020 11:37:55 GMT","ID":102,"Raum":"A102","Temp":23.0,"co2":900.0,"h2o":70.0,"score":60.0}
-                var roomTest = "window.emitData(\'" + room + "\');";
-                document.getElementById('vcontainer').innerHTML += '<div id="vrow" class="row" style="border-top-style: none; border-right-style: none; border-bottom-style: solid; border-left-style: none;"><div align="center" class="col col-2"><button onclick="' + roomTest + '" id="room' + fetchedRoomData["Raum"] + '" type="button" class="v-btn v-btn--block v-btn--contained theme--dark v-size--default" style="background-color: rgb(121, 16, 20); border-color: rgb(121, 16, 20);"><span class="v-btn__content">' + fetchedRoomData["Raum"] + '</span></button></div>' + roomString + '</div>';
-                //onclick wird entweder direkt ausgeführt (beim laden) oder gar nicht, wenn statt test() eine function() {} angegeben wird
-                //document.getElementById('room' + room).onclick = test(room);
-            }
         });
     },
 
     methods: {
-        sortRooms: (roomData) => {
-            for (var i=roomData.length; i>1; i--) {
-                for (var j=0; j<i-1; j++) {
-                    var splitted = roomData[j].replace(/^(A)/, '') + 0;
-                    var nextSplitted = roomData[j+1].replace(/^(A)/, '') + 0;
-                    if (splitted > nextSplitted) {
-                        var save = roomData[j];
-                        roomData[j] = roomData[j+1];
-                        roomData[j+1] = save;
-                    }
-                }
-            }
-            return roomData;
-        }
     },
 }
 
