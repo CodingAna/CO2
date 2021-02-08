@@ -37,7 +37,8 @@ def getStatusNow(raumNr):
     db = getDB()
     cursor = db.cursor()
     jetzt = datetime.now().strftime("%Y-%m-%d %H:%M")
-    cursor.execute("SELECT id, raum, temp, co2, h2o, score, datumuhrzeit FROM Messwerte WHERE raum=? ORDER BY datumuhrzeit ASC", (raumNr))
+    #cursor.execute("SELECT id, raum, temp, co2, h2o, score, datumuhrzeit FROM Messwerte WHERE raum=? ORDER BY datumuhrzeit ASC", (raumNr))
+    cursor.execute(f"SELECT id, raum, temp, co2, h2o, score, datumuhrzeit FROM Messwerte WHERE raum={raumNr} ORDER BY datumuhrzeit ASC")
     ergebnis = []
     #for (id, raum, temp, co2, h20, score, datumuhrzeit) in cursor:
      #   ergebnis.append({"id":id, "raum":raum, "temp":temp, "co2":co2, "h2O":h2O, "score":score, "datumuhrzeit":datumuhrzeit}) 
