@@ -23,6 +23,20 @@ export default {
     }),
 
     mounted() {
+        function fB(score) {
+            var r = 0;
+            var g = 0;
+            var b = 0;
+            if (score > 100) {
+                r = 50 * 2.55;
+                b = 100 * 2.55;
+            } else {
+                r = (-0.01 * (score * score) + (2 * score)) * 2.55;
+                g = (-0.01 * (score * score) + 100) * 2.55;
+            }
+            return [r, g, b];
+        }
+
         EventBus.$on('LOADROOMS', (roomNames) => {
             document.getElementById('vcontainer').innerHTML = '';
             var fetchedRoomData = [];
@@ -32,8 +46,7 @@ export default {
                     if (response.status !== 200) {console.error('Code !== 200:' + response); return}
                     response.clone();
                     response.json().then(data => {
-                        if (data.length === undefined) fetchedRoomData.push(data[0][0]);
-                        else fetchedRoomData.push(data[0]);
+                        fetchedRoomData.push(data[data.length-1]);
                         EventBus.$emit('SORTFETCHED', fetchedRoomData, roomNames);
                     }).catch(error => {
                         console.error('An error occured while parsing the string:' + error);
@@ -66,6 +79,8 @@ export default {
                         roomString += '<div justify="center" class="col col-2">' + changed + '</div>';
                     }
                 });
+                var f = fB(fetchedRoomData[k]['score']);
+                roomString += '<div justify="center" class="col col-2">' + '<div style="background-color: rgb(' + f[0] + ',' + f[1] + ',' + f[2] + '); width: 90px; height: 45px; border-radius: 10px;"></div>' + '</div>';
                 //Example data object: {"DatumZeit":"Tue, 29 Dec 2020 11:37:55 GMT","ID":102,"Raum":"A102","Temp":23.0,"co2":900.0,"h2o":70.0,"score":60.0}
                 var roomTest = "window.emitData(\'" + roomNames[k] + "\');";
                 document.getElementById('vcontainer').innerHTML += '<div id="vrow" class="row" style="border-top-style: none; border-right-style: none; border-bottom-style: solid; border-left-style: none;"><div align="center" class="col col-2"><button onclick="' + roomTest + '" id="room' + fetchedRoomData[k]["Raum"] + '" type="button" class="v-btn v-btn--block v-btn--contained theme--dark v-size--default" style="background-color: rgb(121, 16, 20); border-color: rgb(121, 16, 20);"><span class="v-btn__content">' + fetchedRoomData[k]["Raum"] + '</span></button></div>' + roomString + '</div>';

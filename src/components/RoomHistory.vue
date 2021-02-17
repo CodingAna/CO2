@@ -2,7 +2,7 @@
     <v-container>
         <button id='back' style='border-style: solid; border-color: #000000; border-radius: 10px; text-align: center;'><v-icon>mdi-chevron-left</v-icon> Zurück</button>
         <p id='title'></p>
-        <div class="container vertical flat" id="bar_chart">
+        <div class="container vertical flat" id="bar_chart" style="background-color: #EBEBEB; border-radius: 10px; max-width: 300px;">
             <!--<div id='pb' class="progress-bar" v-for="item in values" :key="item">
                 <div class="progress-track">
                     <div class="progress-fill">

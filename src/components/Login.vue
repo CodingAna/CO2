@@ -29,6 +29,7 @@
 
             </v-list-item>
             <v-card-actions>
+                <!--
                 <v-row>
                     <v-col>
                         <v-checkbox style="margin-right:20%;" color="green">
@@ -48,9 +49,10 @@
                         </v-checkbox>
                     </v-col>
                 </v-row>
+                -->
                 <v-row>
                     <v-col style="margin-left:35%">
-                        <v-btn dark color="#791014" @click="loginclick()">
+                        <v-btn style="float: right; right: 24px;" dark color="#791014" @click="loginclick()">
                             Login
                         </v-btn>
                     </v-col>
@@ -62,7 +64,7 @@
                 <v-card-title class="title">
                     Terms
                 </v-card-title>
-                <v-card-text v-for="n in 5" :key="n"> <!-- The content gets displayed 5 times. Remove this XD -->
+                <v-card-text v-for="n in 5" :key="n">
                     {{content}}
                 </v-card-text>
                 <v-card-actions>
